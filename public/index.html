@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AVATARX — AI Avatar Generator</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav id="navbar" style="display:none">
+  <div class="logo">AVATAR<span>X</span></div>
+  <div class="nav-right">
+    <span class="nav-user" id="nav-username"></span>
+    <button class="btn-logout" onclick="logout()">Logout</button>
+  </div>
+</nav>
+
+<!-- AUTH PAGE -->
+<div id="auth-page" class="active">
+  <div class="auth-container">
+    <div class="auth-header">
+      <h1>AVATAR<span>X</span></h1>
+      <p>Generate unique AI avatars from text descriptions.<br>Powered by OpenAI + HuggingFace.</p>
+    </div>
+
+    <div class="auth-tabs">
+      <button class="auth-tab active" onclick="switchTab('login')">Login</button>
+      <button class="auth-tab" onclick="switchTab('register')">Register</button>
+    </div>
+
+    <div id="login-form" class="auth-form active">
+      <div class="field">
+        <label>Email</label>
+        <input type="email" id="login-email" placeholder="you@example.com" />
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <input type="password" id="login-password" placeholder="••••••••" />
+      </div>
+      <button class="btn-primary" onclick="login()">LOGIN →</button>
+      <p class="auth-error" id="login-error"></p>
+    </div>
+
+    <div id="register-form" class="auth-form">
+      <div class="field">
+        <label>Username</label>
+        <input type="text" id="reg-username" placeholder="arvin" />
+      </div>
+      <div class="field">
+        <label>Email</label>
+        <input type="email" id="reg-email" placeholder="you@example.com" />
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <input type="password" id="reg-password" placeholder="••••••••" />
+      </div>
+      <button class="btn-primary" onclick="register()">CREATE ACCOUNT →</button>
+      <p class="auth-error" id="reg-error"></p>
+    </div>
+  </div>
+</div>
+
+<!-- APP PAGE -->
+<div id="app-page">
+  <div class="app-grid">
+
+    <!-- LEFT: INPUT -->
+    <div class="panel">
+      <p class="panel-label">// Generate</p>
+      <h2>Describe your avatar</h2>
+      <p>Write a description. OpenAI will refine it into an optimized image prompt, then HuggingFace generates your avatar.</p>
+
+      <div class="steps">
+        <div class="step" id="step-1"></div>
+        <div class="step" id="step-2"></div>
+        <div class="step" id="step-3"></div>
+      </div>
+
+      <p class="status-text" id="status-text">Waiting for input...</p>
+
+      <textarea id="description" placeholder="e.g. A cyberpunk warrior with neon blue eyes, sharp jawline, dark hoodie, rainy city backdrop at night..."></textarea>
+
+      <div class="prompt-preview" id="prompt-preview">
+        <p class="prompt-preview-label">// Refined prompt</p>
+        <p id="refined-prompt-text"></p>
+      </div>
+
+      <button class="btn-primary" id="generate-btn" onclick="generate()">GENERATE AVATAR →</button>
+    </div>
+
+    <!-- RIGHT: RESULT -->
+    <div class="result-panel">
+      <p class="panel-label">// Result</p>
+
+      <div class="image-frame">
+        <div class="image-placeholder" id="image-placeholder">
+          <div class="icon">◈</div>
+          <p>Your avatar will appear here</p>
+        </div>
+        <img id="generated-image" alt="Generated avatar" />
+        <div class="loading-overlay" id="loading-overlay">
+          <div class="spinner"></div>
+          <p id="loading-text">Processing...</p>
+        </div>
+      </div>
+
+      <div class="result-meta" id="result-meta">
+        <p id="result-prompt-display"></p>
+        <button class="btn-save" onclick="saveAvatar()">SAVE TO PROFILE →</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- GALLERY -->
+  <div class="gallery-section">
+    <div class="gallery-header">
+      <h3>Your Avatars</h3>
+      <span class="gallery-count" id="gallery-count">0 generated</span>
+    </div>
+    <div class="gallery-grid" id="gallery-grid">
+      <div class="gallery-empty">No avatars yet. Generate your first one.</div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
